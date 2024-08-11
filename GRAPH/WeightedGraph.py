@@ -2,27 +2,10 @@ from GRAPH.AbstractGraph import AbstractGraph
 
 
 class WeightedGraph(AbstractGraph):
-    def traverse_bfs(self, entry_point):
-        visited_nodes = []
-        visit_order = []
-        for x in range(0, self.nodes):
-            visited_nodes.append(0)
-        queue = []
-        visited_nodes[entry_point - 1] = 1
-        queue.append(entry_point)
-        while queue:
-            visited_node = queue.pop(0)
-            adjacent_nodes = self.matrix.get(visited_node)
-            visit_order.append(visited_node)
-            if adjacent_nodes:
-                for x in adjacent_nodes:
-                    if visited_nodes[x[0] - 1] == 0:
-                        queue.append(x[0])
-                        visited_nodes[x[0] - 1] = 1
-        return visit_order
 
     def __init__(self, is_directed_graph, file_name='input-graph.txt'):
         super().__init__(is_directed_graph)
+        self.is_waited_graph = True
         if file_name:
             self.create_from_file(file_name)
 
@@ -32,7 +15,7 @@ class WeightedGraph(AbstractGraph):
         else:
             self.matrix[int(key)] = [int(value)]
 
-    def traverse_dfs(self):
+    def traverse_dfs(self, entry_point):
         pass
 
     def create_from_file(self, file_name='input-graph.txt'):
@@ -63,5 +46,5 @@ class WeightedGraph(AbstractGraph):
 
 
 if __name__ == '__main__':
-    val = WeightedGraph(False)
-    print(val, val.traverse_bfs(6), sep='\n')
+    val = WeightedGraph(True)
+    print(val, val.traverse_bfs(1), sep='\n')

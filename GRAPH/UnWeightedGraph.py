@@ -14,7 +14,7 @@ class UnWeightedGraph(AbstractGraph):
         else:
             self.matrix[int(key)] = [int(value)]
 
-    def traverse_dfs(self):
+    def traverse_dfs(self, entry_point):
         pass
 
     def traverse_bfs(self, entry_point=1):

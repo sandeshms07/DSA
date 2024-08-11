@@ -9,34 +9,24 @@ class WeightedGraph(AbstractGraph):
         if file_name:
             self.create_from_file(file_name)
 
-    def __create_edges_non_waited(self, key, value):
-        if int(key) in self.matrix:
-            self.matrix[int(key)].append(int(value))
-        else:
-            self.matrix[int(key)] = [int(value)]
-
     def traverse_dfs(self, entry_point):
         pass
 
     def create_from_file(self, file_name='input-graph.txt'):
-        is_first_line = True
+        print(self.is_directed_graph)
         with open(file_name) as x:
             for line in x:
                 if line.strip():
                     line = line.split(' ')
-                    if is_first_line:
-                        is_first_line = False
-                        self.nodes = int(line[0].strip())
-                        # self.edges = int(line[1].strip())
-                    else:
-                        key = line[0].strip()
-                        value = line[1].strip()
-                        weight = line[2].strip()
+                    key = line[0].strip()
+                    value = line[1].strip()
+                    weight = line[2].strip()
+                    self.__create_edges_weighted(key, value, weight)
+                    if not self.is_directed_graph:
+                        key = line[1].strip()
+                        value = line[0].strip()
                         self.__create_edges_weighted(key, value, weight)
-                        if not self.is_directed_graph:
-                            key = line[1].strip()
-                            value = line[0].strip()
-                            self.__create_edges_weighted(key, value, weight)
+        self.nodes = len(self.matrix.keys())
 
     def __create_edges_weighted(self, key, value, weight):
         if int(key) in self.matrix:
@@ -47,4 +37,4 @@ class WeightedGraph(AbstractGraph):
 
 if __name__ == '__main__':
     val = WeightedGraph(True)
-    print(val, val.traverse_bfs(1), sep='\n')
+    print(val, val.traverse_bfs(5), sep='\n')

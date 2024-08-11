@@ -9,11 +9,9 @@ class AbstractGraph(ABC):
         self.matrix = {}
 
     def traverse_bfs(self, entry_point):
-        print(self.is_waited_graph)
-        visited_nodes = []
+        print(self.nodes)
+        visited_nodes = [0] * self.nodes
         visit_order = []
-        for x in range(0, self.nodes):
-            visited_nodes.append(0)
         queue = []
         visited_nodes[entry_point - 1] = 1
         queue.append(entry_point)
@@ -24,14 +22,26 @@ class AbstractGraph(ABC):
             if adjacent_nodes:
                 for x in adjacent_nodes:
                     index = x[0] if self.is_waited_graph else x
-                    if visited_nodes[index - 1] == 0:
+                    if not visited_nodes[index - 1]:
                         queue.append(index)
                         visited_nodes[index - 1] = 1
         return visit_order
 
-    @abstractmethod
     def traverse_dfs(self, entry_point):
-        pass
+        visited_nodes = [False] * self.nodes
+        visited_nodes[entry_point - 1] = True
+        visiting_order = [entry_point]
+
+        print(visited_nodes, 'visited nodes')
+        self.__traverse(entry_point,visited_nodes,visiting_order )
+        return visiting_order
+
+    def __traverse(self, node, visited_nodes, visiting_order):
+        for i in self.matrix.get(node):
+            if not visited_nodes[i - 1]:
+                visiting_order.append(i)
+                visited_nodes[i - 1] = True
+                self.__traverse(i, visited_nodes, visiting_order)
 
     @abstractmethod
     def create_from_file(self, file_name):
